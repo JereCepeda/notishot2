@@ -6,7 +6,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Database\Seeders\NoteSeeder;
 use Database\Seeders\CategorySeeder;
-use Database\Seeders\ResourceSeeder;
+//use Database\Seeders\ResourceSeeder;
 use Database\Seeders\User\UserTableSeeder;
 
 class DatabaseSeeder extends Seeder
@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             UserTableSeeder::class,
             CategorySeeder::class,
             NoteSeeder::class,
-            ResourceSeeder::class, 
+  //          ResourceSeeder::class, 
         ]);
     }
 }
