@@ -7,7 +7,7 @@ use App\Models\Note\Resource;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
 
-class NoteSeeder extends Seeder
+class ResouceSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,12 +16,12 @@ class NoteSeeder extends Seeder
      */
     public function run()
     {
-        $created_note = Note::where('id',1)->first();
-        $created_resource_note = Resource::create([
-            'note_id' => $created_note->id,
-            'route' => Carbon::now()->format('YmdHis').'.jpg',
-            'type' => '.jpg',
-            
-        ]);
+        $search_note = Note::where('id',1)->first();
+        if (isset($search_note)) {
+            Resource::create([
+                'note_id' => $search_note->id,
+                'route' => Carbon::now()->format('YmdHis').'.jpg',
+                'type' => '.jpg',
+            ]);}
     }
 }

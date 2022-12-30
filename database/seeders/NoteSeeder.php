@@ -32,8 +32,6 @@ class NoteSeeder extends Seeder
             'title' => 'Mundial en puerta',
             'location' => 'Qatar',
             'body' => 'Comienza la copa del mundo 2022, el que no salta abandonob'
-        ])
-        
-        ;}
+        ]);}
     }
 }
