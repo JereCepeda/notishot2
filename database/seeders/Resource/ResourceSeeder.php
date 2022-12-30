@@ -1,13 +1,12 @@
 <?php
-
-namespace Database\Seeders;
+namespace Database\Seeders\Resource;
 
 use App\Models\Note\Note;
 use App\Models\Note\Resource;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
 
-class ResouceSeeder extends Seeder
+class ResourceSeeder extends Seeder
 {
     /**
      * Run the database seeds.

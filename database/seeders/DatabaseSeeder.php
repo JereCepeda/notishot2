@@ -1,13 +1,12 @@
 <?php
 
 namespace Database\Seeders;
-
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Database\Seeders\NoteSeeder;
-use Database\Seeders\CategorySeeder;
-//use Database\Seeders\ResourceSeeder;
+use Database\Seeders\Note\NoteSeeder;
 use Database\Seeders\User\UserTableSeeder;
+
+use Database\Seeders\Category\CategorySeeder;
+use Database\Seeders\Resource\ResourceSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,7 +21,7 @@ class DatabaseSeeder extends Seeder
             UserTableSeeder::class,
             CategorySeeder::class,
             NoteSeeder::class,
-  //          ResourceSeeder::class, 
+            ResourceSeeder::class, 
         ]);
     }
 }

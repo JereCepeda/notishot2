@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders\Note;
 
 use App\Models\Note\Category;
 use App\Models\Note\Note;
