@@ -19,7 +19,7 @@ class ResourceSeeder extends Seeder
         if (isset($search_note)) {
             Resource::create([
                 'note_id' => $search_note->id,
-                'route' => Carbon::now()->format('YmdHis').'.jpg',
+                'route' =>"storage/20230425024624.jpg",
                 'type' => '.jpg',
             ]);}
     }

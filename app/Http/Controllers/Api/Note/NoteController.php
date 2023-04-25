@@ -7,7 +7,6 @@ use App\Models\Note\Resource;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\Note\NoteResource;
 use Illuminate\Support\Facades\Validator;
@@ -17,6 +16,8 @@ use App\Http\Requests\Note\UpdateNoteRequest;
 class NoteController extends Controller
 {
     protected $NoteResource = NoteResource::class;
+    public $nota;
+    public $user;
     public function __construct(Note $nota)
     {
         $this->nota= $nota;
@@ -44,8 +45,8 @@ class NoteController extends Controller
      */
     public function show(Note $note)
     {
-        $nota = Note::with(['resources'])->where('id',$note->id)->first();
-        $noteResource = new NoteResource($nota);
+        $this->nota = Note::with(['resources'])->where('id',$note->id)->first();
+        $noteResource = new NoteResource($this->nota);
         return response()->json([
             'data' => $noteResource
         ]);
@@ -66,21 +67,24 @@ class NoteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StoreNoteRequest $request)
-    {
+    {        
         $user = Auth::user()->id;
         $validate=Validator::make($request->all(),[$this->NoteResource]);
         $validate->fails() ? response()->json(['data' => $validate->errors()]) : $request['user_id'] = $user;
         $note = Note::create($request->all());
-        if(isset($request['resource'])){
-            /* $resource = $request->file('resource')->store('public/resource/imagenes');
-*/
-            $path = Storage::putFileAs('/public/resource/imagenes',$request['resource'],Carbon::now()->format('YmdHis').'.jpg');
-            $ext = File::extension($path);
-            $resource['note_id'] = $note->id;
-            $resource['type'] = $ext;
-            $resource['route']  = Storage::url($path);
-            $resource = Resource::create($resource);
-            $note = $this->nota->where('id', $note->id)->with('resources')->first();
+        $formatos_permitidos =  array('jpg','jpeg' ,'png','gif');
+        if($request->hasFile('resource')){
+            $imagen= $request->file('resource');
+            $archivo = $_FILES['resource']['name'];
+            $ext= pathinfo($archivo, PATHINFO_EXTENSION);
+            if(in_array($ext, $formatos_permitidos) ) {
+                $path = $imagen->storeAs('/',Carbon::now()->format('YmdHis').'.'.$ext,'public');
+                $resource['note_id'] = $note->id;
+                $resource['type'] = '.'.$ext;
+                $resource['route']  = Storage::url($path);
+                $resource = Resource::create($resource);
+                $note = $this->nota->where('id', $note->id)->with('resources')->first();                
+            }else{echo 'Error formato no permitido !!';}
         };        
         return response()->json(['data' => new NoteResource($note)]);
     }

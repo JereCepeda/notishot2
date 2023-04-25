@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
     protected $userResource = UserResource::class;
-    public function __construct(User $user)
+    protected $user;
+    
+    function __construct(User $user)
     {
         $this->user = $user;
     }
