@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Api\User;
 use App\Models\User\User;
 use App\Models\User\Profile;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\UpdateUserRequest;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\User\UserRequest;
 use App\Http\Resources\User\UserResource;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\User\UpdateUserRequest;
 
 class UserController extends Controller
 {

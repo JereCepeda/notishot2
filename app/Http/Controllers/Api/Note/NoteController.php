@@ -30,7 +30,7 @@ class NoteController extends Controller
     public function index()
     {
         $userAuth= auth('api')->user()->id;
-        $notes = Note::with(['resources'])->get()->where('user_id',$userAuth);
+        $notes = Note::with('resources')->get()->where('user_id',$userAuth);
         $listaNotas = NoteResource::collection($notes);
         return response()->json([
             'data' => $listaNotas
@@ -45,15 +45,15 @@ class NoteController extends Controller
      */
     public function show(Note $note)
     {
-        $this->nota = Note::with(['resources'])->where('id',$note->id)->first();
+        $this->nota = Note::with('resources')->where('id',$note->id)->first();
         $noteResource = new NoteResource($this->nota);
         return response()->json([
             'data' => $noteResource
         ]);
     }
-    public function showall(Note $note)
+    public function showall()
     {
-        $notes = Note::with(['resources'])->get();
+        $notes = Note::with('resources')->get();
         $listaNotas = NoteResource::collection($notes);
         return response()->json([
             'data' => $listaNotas
@@ -71,6 +71,7 @@ class NoteController extends Controller
         $user = Auth::user()->id;
         $validate=Validator::make($request->all(),[$this->NoteResource]);
         $validate->fails() ? response()->json(['data' => $validate->errors()]) : $request['user_id'] = $user;
+        dd($request->all());
         $note = Note::create($request->all());
         $formatos_permitidos =  array('jpg','jpeg' ,'png','gif');
         if($request->hasFile('resource')){
@@ -83,7 +84,7 @@ class NoteController extends Controller
                 $resource['type'] = '.'.$ext;
                 $resource['route']  = Storage::url($path);
                 $resource = Resource::create($resource);
-                $note = $this->nota->where('id', $note->id)->with('resources')->first();                
+                $note = Note::with('resources')->find($note->id);
             }else{echo 'Error formato no permitido !!';}
         };        
         return response()->json(['data' => new NoteResource($note)]);
@@ -92,20 +93,25 @@ class NoteController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateNoteRequest  $request
+     * @param  \App\Http\Requests\StoreNoteRequest  $request
      * @param  \App\Models\Note\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateNoteRequest $request, Note $note)
+    public function update(StoreNoteRequest $request, Note $note)
     {
-        $this->nota = Note::where('id',$note->id)->first();   
-        $this->nota->fill($request->all());
-        $this->nota->save();
+        $user = Auth::user()->id;
+        $validate=Validator::make($request->all(),[$this->NoteResource]);
+        $validate->fails() ? response()->json(['data' => $validate->errors()]) : $request['user_id'] = $user;
+        dd($request->all());
+        $nota = Note::with('resources')->findOrFail($note->id);
+        $formatos_permitidos =  array('jpg','jpeg' ,'png','gif');
+        $nota->fill($request->all());
+        $nota->save();
         if(isset($data['resource'])){
             $resource = Resource::where('user_id', $this->user->id)->first();
             $resource->update($data['resource'],$resource);
         }
-        return response(['Note' => $request->all(), 
+        return response(['Note' => new NoteResource($nota), 
         'message' => 'Update Note successfully'], 200);
     }
 
