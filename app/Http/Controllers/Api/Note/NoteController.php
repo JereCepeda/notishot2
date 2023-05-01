@@ -123,6 +123,10 @@ class NoteController extends Controller
      */
     public function destroy(Note $note)
     {
-        //
+        $nota = Note::where('id',$note->id)->first();
+        $message = 'User deleted Succefully';
+        is_null($nota->resource) ? $message .= ' and Resources deleted' : $nota->resource()->delete($nota->resource);
+        isset($nota) ? $nota->delete() : $message = 'Error from delete Note'; 
+        return $message;
     }
 }
