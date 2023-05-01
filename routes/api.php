@@ -21,11 +21,12 @@ Route::prefix('v1')->group(function () {
         Route::post('logout', 'LoginController@logout')->name('logout');
     });
     
-    Route::prefix('public')->group(function () {
+    /*Route::prefix('public')->group(function () {
         Route::namespace('Api\User')->group(function () {
             Route::post('store', 'UserController@store');
+            Route::put('update', 'UserController@update');
         });
-    });
+    });*/
 
     Route::middleware(['auth:api', 'is.role:redactor'])->prefix('writer')->group(function () {
         Route::namespace('Api\Note')->group(function () {

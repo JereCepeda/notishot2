@@ -24,7 +24,8 @@ class StoreResourceRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'resource.type' => 'required|string',
+            'resource.route' => 'required|string'
         ];
     }
 }

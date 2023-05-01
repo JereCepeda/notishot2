@@ -24,7 +24,6 @@ class UpdateNoteRequest extends FormRequest
     public function rules()
     {
         return [
-            'category_id' => 'string',
             'title' => 'min:5',
             'location' => 'string',
             'body' => 'string|min:10',
