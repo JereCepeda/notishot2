@@ -55,6 +55,11 @@
 				},
 				{
 					"name": "Show",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
 					"request": {
 						"method": "GET",
 						"header": [
@@ -62,15 +67,26 @@
 								"key": "Authorization",
 								"value": "{{Authorization}}",
 								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
 							}
 						],
 						"url": {
-							"raw": "{{api_local}}admin/usuarios",
+							"raw": "{{api_local}}admin/usuarios/2",
 							"host": [
 								"{{api_local}}admin"
 							],
 							"path": [
-								"usuarios"
+								"usuarios",
+								"2"
 							]
 						},
 						"description": "Show user data\r\n\r\n-- returns 404 if not user finded\r\n--if user id is of an superadmin user and current api logged user is not a superadmin throws permissions fail message"
@@ -79,13 +95,30 @@
 				},
 				{
 					"name": "Store",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true,
+							"accept": true
+						}
+					},
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
 								"value": "{{Authorization}}",
-								"type": "text"
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "default"
 							}
 						],
 						"body": {
@@ -93,12 +126,12 @@
 							"raw": "{\r\n    \"nick_name\" : \"jorgiño 666\",\r\n    \"email\" : \"jorgeee@apibase.com\",\r\n    \"password\" : \"apibase\",\r\n    \"c_password\" : \"apibase\",\r\n    \"role_id\" : 5,\r\n    \"profile\" : {\r\n        \"name\" : \"raul\",\r\n        \"last_name\" : \"fundacion fln\",\r\n        \"cel_phone\" : \"+5493454199555\",\r\n        \"phone\" : \"5493454199555\",\r\n        \"profile_photo\" : null,\r\n        \"facebook_url\" : null,\r\n        \"instagram_url\" : null,\r\n        \"twitter_url\" : null,\r\n        \"blog_personal_url\" : null,\r\n        \"city\" : \"Rosario\",\r\n        \"province\" : \"Santa Fe\",\r\n        \"country\" :  \"Argentina\",\r\n        \"postal_code\" : \"2000\",\r\n        \"accepted\" : false,\r\n        \"accepted_by\" : null,\r\n        \"accepted_at\" : null\r\n    }\r\n}"
 						},
 						"url": {
-							"raw": "{{api_local}}admin/usuarios",
+							"raw": "{{api_local}}public/store",
 							"host": [
-								"{{api_local}}admin"
+								"{{api_local}}public"
 							],
 							"path": [
-								"usuarios"
+								"store"
 							]
 						},
 						"description": "Store api endpoint"
@@ -239,6 +272,11 @@
 								"key": "Accept",
 								"value": "application/json",
 								"type": "default"
+							},
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "default"
 							}
 						],
 						"body": {
@@ -251,7 +289,7 @@
 								},
 								{
 									"key": "title",
-									"value": "shalala",
+									"value": "titulo random",
 									"type": "text"
 								},
 								{
@@ -265,9 +303,13 @@
 									"type": "text"
 								},
 								{
-									"key": "resource",
+									"key": "resource[]",
 									"type": "file",
-									"src": "/C:/Users/ceped/Downloads/WhatsApp Image 2022-09-21 at 8.35.20 PM.jpeg"
+									"src": [
+										"/C:/Users/ceped/Downloads/ticket_20220921205443.jpg",
+										"/C:/Users/ceped/Downloads/certificado.jpg",
+										"/C:/Users/ceped/Downloads/Diagrama sin título (5).jpg"
+									]
 								}
 							],
 							"options": {
@@ -283,6 +325,55 @@
 							],
 							"path": [
 								"notes"
+							]
+						},
+						"description": "Api request for store Notes\nrole required redactor"
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"body\" : \"probando si funciona\",\r\n    \"category_id\" : 1,\r\n    \"location\" : \"Rosario, igual que antes\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_local}}writer/notes/3",
+							"host": [
+								"{{api_local}}writer"
+							],
+							"path": [
+								"notes",
+								"3"
 							]
 						},
 						"description": "Api request for store Notes\nrole required redactor"
@@ -336,7 +427,77 @@
 						}
 					},
 					"request": {
-						"method": "GET",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "category_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "shalala",
+									"type": "text"
+								},
+								{
+									"key": "location",
+									"value": "Rosario, Santa Fe",
+									"type": "text"
+								},
+								{
+									"key": "body",
+									"value": "pasa como loco con resource",
+									"type": "text"
+								},
+								{
+									"key": "resource",
+									"type": "file",
+									"src": "/C:/Users/ceped/Downloads/WhatsApp Image 2022-09-21 at 8.35.20 PM.jpeg"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_local}}writer/notes/2",
+							"host": [
+								"{{api_local}}writer"
+							],
+							"path": [
+								"notes",
+								"2"
+							]
+						},
+						"description": "Api return Note find id \n\nnote user's auth\nrole required lector"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "DELETE",
 						"header": [
 							{
 								"key": "Authorization",
@@ -355,85 +516,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{api_local}}writer/notes/2",
+							"raw": "{{api_local}}writer/notes/6",
 							"host": [
 								"{{api_local}}writer"
 							],
 							"path": [
 								"notes",
-								"2"
-							]
-						},
-						"description": "Api return Note find id \n\nnote user's auth\nrole required lector"
-					},
-					"response": []
-				},
-				{
-					"name": "Update",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{Authorization}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"category_id\" : 1,\r\n    \"title\" : \"titulo del 2do redactor atualizado\" ,\r\n    \"location\" : \"Y vamo vamo vamo vamo lakade\",\r\n    \"body\" : \"lo que se le canto escribir al primer redator atualizado\",\r\n        \"resource\" : {\r\n                        \"type\" : \"jpg\" ,\r\n                        \"route\" : \"public/resource/imagenes/20220523012733.jpg\"\r\n\r\n        }\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "127.0.1.10/public/api/v1/writer/notes/2",
-							"host": [
-								"127",
-								"0",
-								"1",
-								"10"
-							],
-							"path": [
-								"public",
-								"api",
-								"v1",
-								"writer",
-								"notes",
-								"2"
-							]
-						},
-						"description": "Api return succcess if update succefully \n\nnote user's auth\nrole required redactor"
-					},
-					"response": []
-				},
-				{
-					"name": "Delete",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{Authorizathion}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "https://notishot.herokuapp.com/api/v1/writer/notes/7",
-							"protocol": "https",
-							"host": [
-								"notishot",
-								"herokuapp",
-								"com"
-							],
-							"path": [
-								"api",
-								"v1",
-								"writer",
-								"notes",
-								"7"
+								"6"
 							]
 						},
 						"description": "Api return succcess if deleted note are succefully \n\nnote user's auth\nrole required redactor"
@@ -448,19 +537,52 @@
 							{
 								"key": "Authorization",
 								"value": "{{Authorization}}",
-								"type": "text"
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
 							}
 						],
 						"url": {
-							"raw": "{{api_url}}writer/notes",
+							"raw": "{{api_local}}public/notas-portada",
 							"host": [
-								"{{api_url}}writer"
+								"{{api_local}}public"
 							],
 							"path": [
-								"notes"
+								"notas-portada"
 							]
 						},
 						"description": "Api return All Notes\n\nrole requred : lector"
+					},
+					"response": []
+				},
+				{
+					"name": "resource nota",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:8000/storage/20230425032746.jpg",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"storage",
+								"20230425032746.jpg"
+							]
+						}
 					},
 					"response": []
 				}
